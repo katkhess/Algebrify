@@ -1,0 +1,240 @@
+/* Theme variables (light defaults) */
+:root {
+    --bg: #ffffff;
+    --text: #222;
+    --muted: #6c757d;
+    --card-bg: #ffffff;
+    --brand: #007bff;
+}
+
+/* Dark theme override when .theme-dark is added to <html> */
+.theme-dark {
+    --bg: #22262a;
+    --text: #e9eef2;
+    --muted: #bfc9d2;
+    --card-bg: #2b2f33;
+    --brand: #2b8cff;
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+/* Base body */
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Page title/hero */
+.hero {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.hero h1 {
+    font-weight: 700;
+    font-size: 2.6rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Center the card and constrain width */
+.hero-card {
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 18px rgba(32, 40, 50, 0.12);
+    background: var(--card-bg);
+    padding: 0;
+}
+
+/* Image styles */
+.hero-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+}
+
+/* Caption and buttons */
+.hero-caption {
+    text-align: center;
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 18px;
+}
+
+/* Buttons centered and spaced */
+.hero-actions {
+    text-align: center;
+    margin-top: 8px;
+}
+
+.hero-actions .btn {
+    min-width: 100px;
+    margin: 0 6px;
+}
+
+/* Navbar brand */
+.navbar-brand {
+    font-weight: 600;
+    padding: 4px 8px;
+}
+
+/* Footer small adjustments */
+footer .container {
+    max-width: 980px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero-card {
+        max-width: 90%;
+    }
+}
+
+/* Accessibility: focus outlines */
+a:focus,
+button:focus {
+    outline: 3px solid rgba(0, 123, 255, 0.25);
+    outline-offset: 2px;
+}
+
+/* Make cards and alerts use the card color and proper text color in dark mode */
+.theme-dark .card,
+.theme-dark .hero-card,
+.theme-dark .alert,
+.theme-dark .table,
+.theme-dark .table th,
+.theme-dark .table td {
+    background: var(--card-bg) !important;
+    color: var(--text) !important;
+    border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Ensure card titles and headings are readable */
+.theme-dark .card-title,
+.theme-dark h1,
+.theme-dark h2,
+.theme-dark h3,
+.theme-dark h4 {
+    color: var(--text) !important;
+}
+
+/* Form labels, small text, and placeholders */
+.theme-dark label,
+.theme-dark .form-label,
+.theme-dark .form-text,
+.theme-dark .hero-caption,
+.theme-dark .small,
+.theme-dark .text-muted {
+    color: var(--muted) !important;
+}
+
+/* Form controls: background, border and text in dark mode */
+.theme-dark .form-control,
+.theme-dark .form-select,
+.theme-dark textarea.form-control {
+    background-color: #3a3f43 !important;
+    /* slightly lighter than page bg */
+    color: var(--text) !important;
+    border: 1px solid rgba(255, 255, 255, 0.07) !important;
+    box-shadow: none !important;
+}
+
+/* Placeholder text darker so it's visible on light cards (and visible in dark inputs) */
+.theme-dark .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.55) !important;
+    opacity: 1;
+}
+
+/* Inputs when focused */
+.theme-dark .form-control:focus,
+.theme-dark .form-select:focus {
+    background-color: #3a3f43 !important;
+    color: var(--text) !important;
+    border-color: rgba(91, 154, 255, 0.9) !important;
+    box-shadow: 0 0 0 0.15rem rgba(91, 154, 255, 0.12) !important;
+}
+
+/* Button tweaks so primary and outline buttons look OK */
+.theme-dark .btn-primary {
+    background-color: var(--brand) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: #fff !important;
+}
+
+.theme-dark .btn-outline-light {
+    color: #e9eef2 !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.theme-dark .btn {
+    box-shadow: none;
+}
+
+/* Make the card inner text (like the "Solve for x:" prompt) visibly darker
+   if the card stays light; if your card is dark this will still use var(--text). */
+.theme-dark .card .lead,
+.theme-dark .card .card-text,
+.theme-dark .card .card-header,
+.theme-dark .card .card-body>* {
+    color: var(--text) !important;
+}
+
+/* If you use alerts for hint box, make them readable */
+.theme-dark .alert {
+    color: var(--text) !important;
+}
+
+/* Small fix for anchor links inside dark footer */
+.theme-dark footer a {
+    color: rgba(180, 200, 255, 0.9) !important;
+}
+
+/* Optional: reduce transition flicker when toggling theme */
+html,
+body,
+.container,
+.card,
+.form-control {
+    transition: background-color 150ms linear, color 150ms linear, border-color 150ms linear;
+}
+
+/* Theme icon sizing */
+#theme-toggle svg,
+#theme-toggle svg * {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    color: inherit;
+}
+
+/* Icon showing logic */
+html:not(.theme-dark) #moon-icon {
+    display: inline-block;
+}
+html:not(.theme-dark) #sun-icon {
+    display: none;
+}
+html.theme-dark #moon-icon {
+    display: none;
+}
+html.theme-dark #sun-icon {
+    display: inline-block;
+}
+
+/* cards readable in dark mode */
+.theme-dark .card .display-4,
+.theme-dark .card .h1,
+.theme-dark .card .h2,  
+.theme-dark .card .h3 {
+    color: var(--text) !important;
+}

@@ -1,0 +1,27 @@
+{# Home page with welcome GIF and quick links #}
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+
+{% block main %}
+<div class="text-center mt-5">
+    <h1 class="mb-4">Welcome to Algebrify</h1>
+    <!-- Math GIF via Giphy - https://giphy.com/gifs/u7NBX4OnKEPfCAtuGw -->
+    <img
+        src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeGIxcmN5bGxsb28wdnV2ZmY1b3gzbjdpMTMzYm80a2d5NHFmbnpoYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/u7NBX4OnKEPfCAtuGw/giphy.gif"
+        alt="Math animation"
+        class="img-fluid rounded shadow mb-3"
+        style="max-width: 480px; width: 100%; height: auto;"
+    />
+    <p>Your go-to platform for algebraic computations and learning.</p>
+
+    {% if session.get('user_id') %}
+    <!--User is logged in -->
+    <a class="btn btn-primary mt-2 me-2" href="/practice">Practice</a>
+    <a class="btn btn-primary mt-2 me-2" href="/logout">Logout</a>
+    {% else %}
+    <!--User is not logged in -->
+    <a class="btn btn-primary mt-2 me-2" href="/login">Login</a>
+    <a class="btn btn-outline-primary mt-2" href="/register">Register</a>
+    {% endif %}
+</div>
+{% endblock %}  

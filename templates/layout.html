@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Algebrify{% endblock %}</title>
+
+    <!-- Bootstrap 4.5.2 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Site stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand px-2 rounded bg-primary text-white" href="/">Algebrify</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto align-items-center">
+                    {% if session.get('user_id') %}
+                    <li class="nav-item"><a class="nav-link" href="/practice">Practice</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/history">History</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
+                    {% endif %}
+                    <!-- Theme toggle button -->
+                    <li class="nav-item ml-2">
+                        <button id="theme-toggle" class="btn btn-sm btn-outline-light d-flex align-items-center" onclick="toggleTheme()"
+                            aria-pressed="false" aria-label="Toggle theme">
+                        <!-- Moon/Sun icons from Bootstrap Icons (MIT License) - https://icons.getbootstrap.com/ -->
+                            <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-moon"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 .5 12.766.5 8.136c0-3.667 2.952-6.864 6.8-7.858A.752.752 0 0 1 6 .278z" />
+                            </svg>
+                            <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sun"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M8 3.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zM8 0a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V.5A.5.5 0 0 1 8 0zM8 15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0v-1a.5.5 0 0 1 .5-.5zM3.5 8a.5.5 0 0 1 .5.5H5a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.5-.5zM11 8a.5.5 0 0 1 .5.5H13a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zM2.343 2.343a.5.5 0 0 1 .707 0l.707.707a.5.5 0 0 1-.707.707l-.707-.707a.5.5 0 0 1 0-.707zM12.728 12.728a.5.5 0 0 1 .707 0l.707.707a.5.5 0 0 1-.707.707l-.707-.707a.5.5 0 0 1 0-.707zM2.343 13.657a.5.5 0 0 1 0-.707l.707-.707a.5.5 0 0 1 .707.707l-.707.707a.5.5 0 0 1-.707 0zM12.728 3.172a.5.5 0 0 1 0 .707l-.707.707a.5.5 0 0 1-.707-.707l.707-.707a.5.5 0 0 1 .707 0z" />
+                            </svg>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="mb-3">
+            {% for m in messages %}
+            <div class="alert alert-info">{{ m }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block main %}{% endblock %}
+    </main>
+
+    <footer class="text-center py-3 small text-muted border-top">
+        <div class="container">
+            Algebrify — practice algebra with hints and tutoring. &middot;
+            <a href="/select">Select problems</a>
+        </div>
+    </footer>
+
+    <!-- jQuery + Popper + Bootstrap 4 JS (required for collapse/toggler) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        crossorigin="anonymous"></script>
+
+    <!-- Single click sun/moon toggle -->
+    <script>
+        (function () {
+            const STORAGE_KEY = 'algebrify_theme'; // 'dark' or 'light' or absent => follow system
+            const root = document.documentElement;
+            const btn = document.getElementById('theme-toggle');
+
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    root.classList.add('theme-dark');
+                    root.classList.remove('theme-light');
+                    if (btn) btn.setAttribute('aria-pressed', 'true');
+                } else if (theme === 'light') {
+                    root.classList.add('theme-light');
+                    root.classList.remove('theme-dark');
+                    if (btn) btn.setAttribute('aria-pressed', 'false');
+                } 
+            }
+
+            // Initialize from localStorage; if not set, don't force (let CSS media query decide)
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved === 'dark' || saved === 'light') {
+                applyTheme(saved);}
+                else {
+                    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    applyTheme(prefersDark ? 'dark' : 'light');}
+
+            window.toggleTheme = function () {
+                const current = root.classList.contains('theme-dark') ? 'dark' : 'light';
+                const newTheme = current === 'dark' ? 'light' : 'dark';
+                localStorage.setItem(STORAGE_KEY, newTheme);
+                applyTheme(newTheme);
+            };
+
+            window.addEventListener('storage', function (e) {
+                if (e.key ===STORAGE_KEY && (e.newValue === 'dark' || e.newValue === 'light')) {
+                    applyTheme(e.newValue);
+                }
+            });
+        })();
+    </script>
+
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

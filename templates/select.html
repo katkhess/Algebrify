@@ -1,0 +1,27 @@
+{# Optional select page: list problem types (demo) #}
+{% extends "layout.html" %}
+{% block title %}Choose Unit{% endblock %}
+
+{% block main %}
+<div class="container mt-5">
+<h2 class="text-center mb-4">Select a Unit to Practice</h2>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        {% if types %}
+            <div class="list-group">
+                {% for t in types %}
+                    <a href="/practice?problem_type={{ t.type }}" class="list-group-item list-group-item-action">
+                        {{ t.type }}
+                        <br>
+                        <small class="text-muted">{{ t.description or '' }}</small>
+                    </a>
+                {% endfor %}
+                </div>
+        {% else %}
+            <p class="text-center">No problem types found for this unit.</p>
+        {% endif %}
+    </div>
+</div>  
+</div>
+{% endblock %}  
